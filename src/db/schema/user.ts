@@ -1,7 +1,5 @@
 import { timestamp } from "drizzle-orm/pg-core";
 import {
-  integer,
-  pgEnum,
   pgTable,
   serial,
   uniqueIndex,

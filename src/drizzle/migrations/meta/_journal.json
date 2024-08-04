@@ -8,6 +8,13 @@
       "when": 1722791378234,
       "tag": "0000_foamy_living_tribunal",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1722796804568,
+      "tag": "0001_lame_genesis",
+      "breakpoints": true
     }
   ]
 }
