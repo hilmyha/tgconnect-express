@@ -1,6 +1,7 @@
 import * as dotenv from "dotenv";
 import express from "express";
 import cors from "cors";
+import authRoute from "./route/auth.route";
 
 dotenv.config();
 
@@ -12,9 +13,8 @@ app.use(
 );
 app.use(express.json());
 
-app.get("/", (req, res) => {
-  res.send("Hello World");
-});
+// routes
+app.use("/api/v1/auth", authRoute);
 
 app.listen(process.env.PORT, () => {
   console.log(`Server is running on port ${process.env.PORT}`);

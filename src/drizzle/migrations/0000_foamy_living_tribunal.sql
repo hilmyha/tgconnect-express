@@ -4,7 +4,7 @@ CREATE TABLE IF NOT EXISTS "users" (
 	"email" varchar(256) NOT NULL,
 	"password" varchar(256) NOT NULL,
 	"created_at" timestamp DEFAULT now() NOT NULL,
-	"updated_at" timestamp DEFAULT now()
+	"updated_at" timestamp DEFAULT now() NOT NULL
 );
 --> statement-breakpoint
 CREATE UNIQUE INDEX IF NOT EXISTS "username" ON "users" USING btree ("username");--> statement-breakpoint

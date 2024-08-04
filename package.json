@@ -7,7 +7,7 @@
     "dev": "nodemon ./src/index.ts",
     "migration:generate": "drizzle-kit generate --config=./src/drizzle.config.ts",
     "migration:push": "node -r ts-node/register ./src/db/migrate.ts",
-    "migration:drop": "drizzle-kit drop"
+    "migration:drop": "drizzle-kit drop --config=./src/drizzle.config.ts"
   },
   "keywords": [
     "RestfulAPI"
