@@ -144,3 +144,73 @@ export const logoutUser = async (req: Request, res: Response) => {
     return res.status(500).json({ message: error.message });
   }
 };
+
+// Refresh Token
+export const refreshToken = async (req: Request, res: Response) => {
+  try {
+    const { refreshToken } = req.body;
+
+    // check if refresh token exists
+    if (!refreshToken) {
+      return res.status(400).json({
+        status: "error",
+        message: "Refresh token is required",
+      });
+    }
+
+    // check if refresh token exists in db
+    const [refreshTokenData] = await db
+      .select()
+      .from(refreshTokenSchema)
+      .where(eq(refreshTokenSchema.token, refreshToken))
+      .execute();
+
+    if (!refreshTokenData) {
+      return res.status(404).json({
+        status: "error",
+        message: "Refresh token not found",
+      });
+    }
+
+    // check if refresh token has expired
+    if (new Date() > refreshTokenData.expires_at) {
+      return res.status(400).json({
+        status: "error",
+        message: "Refresh token has expired",
+      });
+    }
+
+    // check if user exists
+    const [user] = await db
+      .select()
+      .from(usersSchema)
+      .where(eq(usersSchema.id, refreshTokenData.user_id))
+      .execute();
+
+    if (!user) {
+      return res.status(404).json({
+        status: "error",
+        message: "User not found",
+      });
+    }
+
+    // generate token
+    const token = jwt.sign({ id: user.id }, secretKey!, {
+      expiresIn: "1h",
+    });
+
+    // send response
+    return res.status(200).json({
+      status: "success",
+      message: "Token refreshed successfully",
+      data: {
+        id: user.id,
+        username: user.username,
+        email: user.email,
+        token,
+      },
+    });
+  } catch (error: any) {
+    return res.status(500).json({ message: error.message });
+  }
+};

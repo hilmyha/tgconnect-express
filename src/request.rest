@@ -17,18 +17,26 @@ Content-Type: application/json
     "password": "haidar123"
 }
 
+### Refresh Token
+POST http://localhost:3001/api/v1/auth/refresh-token
+Content-Type: application/json
+
+{
+    "refreshToken": "a654808d-1603-4881-a230-25cd534f92ff"
+}
+
 ### Get User
 GET http://localhost:3001/api/v1/users
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNzIyODA5NjY5LCJleHAiOjE3MjI4MTMyNjl9.jymFLG6KlYGVEIW6clXdPBLQXw4w_QAXO-WI66w0ixU
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNzIyODQyMjUwLCJleHAiOjE3MjI4NDU4NTB9.jBEn_UIqAbiOLi0yGvrErP6K0xbDCCOCT7BOr07ZAl0
 
 ### Get User By Id
 GET http://localhost:3001/api/v1/users/2
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNzIyODA5NjY5LCJleHAiOjE3MjI4MTMyNjl9.jymFLG6KlYGVEIW6clXdPBLQXw4w_QAXO-WI66w0ixU
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNzIyODQyMjUwLCJleHAiOjE3MjI4NDU4NTB9.jBEn_UIqAbiOLi0yGvrErP6K0xbDCCOCT7BOr07ZAl0
 
 ### Update User
 PUT http://localhost:3001/api/v1/users/update/2
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNzIyODA5NjY5LCJleHAiOjE3MjI4MTMyNjl9.jymFLG6KlYGVEIW6clXdPBLQXw4w_QAXO-WI66w0ixU
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNzIyODQyMjUwLCJleHAiOjE3MjI4NDU4NTB9.jBEn_UIqAbiOLi0yGvrErP6K0xbDCCOCT7BOr07ZAl0
 
 {
     "nama": "Usman GG",
