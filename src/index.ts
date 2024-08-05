@@ -17,7 +17,7 @@ app.use(express.json());
 
 // routes
 app.use("/api/v1/auth", authRoute);
-app.use("/api/v1/", authMiddleware, userRoute);
+app.use("/api/v1", userRoute);
 
 app.listen(process.env.PORT, () => {
   console.log(`Server is running on port ${process.env.PORT}`);

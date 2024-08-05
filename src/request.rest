@@ -1,0 +1,39 @@
+### Register User
+POST http://localhost:3001/api/v1/auth/register
+Content-Type: application/json
+
+{
+    "username": "usman",
+    "email": "usman@gmail.com",
+    "password": "usman123"
+}
+
+### Login User
+POST http://localhost:3001/api/v1/auth/login
+Content-Type: application/json
+
+{
+    "username": "haidar",
+    "password": "haidar123"
+}
+
+### Get User
+GET http://localhost:3001/api/v1/users
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNzIyODA5NjY5LCJleHAiOjE3MjI4MTMyNjl9.jymFLG6KlYGVEIW6clXdPBLQXw4w_QAXO-WI66w0ixU
+
+### Get User By Id
+GET http://localhost:3001/api/v1/users/2
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNzIyODA5NjY5LCJleHAiOjE3MjI4MTMyNjl9.jymFLG6KlYGVEIW6clXdPBLQXw4w_QAXO-WI66w0ixU
+
+### Update User
+PUT http://localhost:3001/api/v1/users/update/2
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNzIyODA5NjY5LCJleHAiOjE3MjI4MTMyNjl9.jymFLG6KlYGVEIW6clXdPBLQXw4w_QAXO-WI66w0ixU
+
+{
+    "nama": "Usman GG",
+    "no_handphone": "081234567890",
+    "jalan": "Pajajaran",
+    "blok": "C13",
+    "status_kependudukan": "Penduduk Sementara"
+}

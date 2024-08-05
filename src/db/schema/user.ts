@@ -1,10 +1,10 @@
-import { timestamp } from "drizzle-orm/pg-core";
-import {
-  pgTable,
-  serial,
-  uniqueIndex,
-  varchar,
-} from "drizzle-orm/pg-core";
+import { pgEnum, timestamp } from "drizzle-orm/pg-core";
+import { pgTable, serial, uniqueIndex, varchar } from "drizzle-orm/pg-core";
+
+export const statusKependudukan = pgEnum("status_kependudukan", [
+  "Penduduk Tetap",
+  "Penduduk Sementara",
+]);
 
 export const usersSchema = pgTable(
   "users",
@@ -13,6 +13,13 @@ export const usersSchema = pgTable(
     username: varchar("username", { length: 256 }).notNull(),
     email: varchar("email", { length: 256 }).notNull(),
     password: varchar("password", { length: 256 }).notNull(),
+
+    // data warga
+    nama: varchar("nama", { length: 256 }),
+    no_handphone: varchar("no_handphone", { length: 256 }),
+    jalan: varchar("jalan", { length: 256 }),
+    blok: varchar("blok", { length: 256 }),
+    status_kependudukan: statusKependudukan("status_kependudukan"),
 
     // timestamp
     created_at: timestamp("created_at").notNull().defaultNow(),
