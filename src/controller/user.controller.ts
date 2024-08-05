@@ -1,5 +1,6 @@
 import dotenv from "dotenv";
 import { Request, Response } from "express";
+import bcryptjs from "bcryptjs";
 
 // schema imports
 import { usersSchema } from "../db/schema/user";
@@ -56,6 +57,7 @@ export const updateUser = async (req: Request, res: Response) => {
     const {
       username,
       email,
+      password,
       nama,
       no_handphone,
       jalan,
@@ -63,11 +65,15 @@ export const updateUser = async (req: Request, res: Response) => {
       status_kependudukan,
     } = req.body;
 
+    const salt = await bcryptjs.genSalt(10);
+    const hashedPassword = await bcryptjs.hash(password, salt);
+
     const user = await db
       .update(usersSchema)
       .set({
         username,
         email,
+        password: hashedPassword,
         nama,
         no_handphone,
         jalan,
@@ -91,7 +97,51 @@ export const updateUser = async (req: Request, res: Response) => {
         jalan,
         blok,
         status_kependudukan,
-      }
+      },
+    });
+  } catch (error: any) {
+    res.status(500).json({
+      status: "error",
+      message: error.message,
+    });
+  }
+};
+
+// Delete user
+export const deleteUser = async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+    const userId = Number(id);
+
+    if (userId === req.user.id) {
+      return res.status(400).json({
+        status: "error",
+        message: "You can't delete yourself",
+      });
+    } else if (req.user.is_admin === true) {
+      return res.status(400).json({
+        status: "error",
+        message: "You are not authorized to delete a admin",
+      });
+    }
+
+    // check if user does not exist
+    const user = await db
+      .select()
+      .from(usersSchema)
+      .where(eq(usersSchema.id, userId))
+      .execute();
+
+    if (user.length === 0) {
+      return res.status(400).json({
+        status: "error",
+        message: "User does not exist",
+      });
+    }
+
+    res.json({
+      status: "success",
+      message: "User deleted successfully",
     });
   } catch (error: any) {
     res.status(500).json({
