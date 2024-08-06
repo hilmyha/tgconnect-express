@@ -14,11 +14,10 @@ export const laporanSchema = pgTable("laporans", {
   id: serial("id").primaryKey(),
   title: varchar("title", { length: 256 }).notNull(),
   description: varchar("description", { length: 256 }).notNull(),
-  location: varchar("location", { length: 256 }).notNull(),
   status: laporanEnum("status").notNull(),
 
   // photo url
-  photo_url: varchar("photo_url", { length: 256 }).notNull(),
+  photo_url: varchar("photo_url", { length: 256 }),
 
   // user id
   user_id: integer("user_id")

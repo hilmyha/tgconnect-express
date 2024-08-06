@@ -8,9 +8,8 @@ CREATE TABLE IF NOT EXISTS "laporans" (
 	"id" serial PRIMARY KEY NOT NULL,
 	"title" varchar(256) NOT NULL,
 	"description" varchar(256) NOT NULL,
-	"location" varchar(256) NOT NULL,
 	"status" "laporan_status" NOT NULL,
-	"photo_url" varchar(256) NOT NULL,
+	"photo_url" varchar(256),
 	"user_id" integer NOT NULL,
 	"created_at" timestamp DEFAULT now() NOT NULL,
 	"updated_at" timestamp DEFAULT now() NOT NULL

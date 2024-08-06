@@ -1,5 +1,6 @@
 @port = 3000
 @base_url = http://localhost:{{ port }}/api/v1
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNzIyODkwOTI4LCJleHAiOjE3MjI4OTQ1Mjh9.q5Hg24In5pENUh0l_5pNqzae3NC4Mt52JmF8alZRoKQ
 
 
 ### Register User
@@ -31,26 +32,54 @@ Content-Type: application/json
 
 ### Get User
 GET {{ base_url }}/users
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNzIyODYyMzI3LCJleHAiOjE3MjI4NjU5Mjd9.QZWHWK8I6XfgDH4Py4LSHCmQP7pIFe-Lkei9FApzOHU
+Authorization: Bearer {{token}}
 
 ### Get User By Id
 GET {{ base_url }}/users/2
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNzIyODYyMzI3LCJleHAiOjE3MjI4NjU5Mjd9.QZWHWK8I6XfgDH4Py4LSHCmQP7pIFe-Lkei9FApzOHU
+Authorization: Bearer {{token}}
 
 ### Update User
-PUT {{ base_url }}/users/update/2
+PUT {{ base_url }}/users/update/1
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNzIyODYyMzI3LCJleHAiOjE3MjI4NjU5Mjd9.QZWHWK8I6XfgDH4Py4LSHCmQP7pIFe-Lkei9FApzOHU
+Authorization: Bearer {{token}}
 
 {
-    "nama": "Usman GG",
-    "password" : "usman123",
-    "no_handphone": "081234567890",
-    "jalan": "Pajajaran",
-    "blok": "C13",
-    "status_kependudukan": "Penduduk Tetap"
+    "is_admin": false
 }
 
 ### Delete User
 DELETE {{ base_url }}/users/delete/3
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNzIyODYyMzI3LCJleHAiOjE3MjI4NjU5Mjd9.QZWHWK8I6XfgDH4Py4LSHCmQP7pIFe-Lkei9FApzOHU
+Authorization: Bearer {{token}}
+
+
+### Get All Laporans
+GET {{ base_url }}/laporans
+Authorization: Bearer {{token}}
+
+### Get Laporan By Id
+GET {{ base_url }}/laporans/2
+Authorization: Bearer {{token}}
+
+### Create Laporan
+POST {{ base_url }}/laporans/create
+Content-Type: multipart/form-data; boundary=boundary
+Authorization: Bearer {{token}}
+
+--boundary
+Content-Disposition: form-data; name="title"
+
+Laporan 2 png
+--boundary
+Content-Disposition: form-data; name="description"
+
+Laporan 2 png Description
+--boundary
+Content-Disposition: form-data; name="status"
+
+Penting
+--boundary
+Content-Disposition: form-data; name="photo"; filename="laporan.png"
+Content-Type: image/jpeg
+
+< C:\Users\hilmy\OneDrive\Pictures\9ed76d611947c5ac25dfe6449ee82712.jpg
+--boundary--

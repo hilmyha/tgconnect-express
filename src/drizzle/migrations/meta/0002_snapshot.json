@@ -1,5 +1,5 @@
 {
-  "id": "6aeb109e-c67f-4fcf-85ca-a540b95db96d",
+  "id": "546b2c68-dee2-4c32-ae02-22c762f88748",
   "prevId": "13156b82-c798-480d-9dc2-09671c8b3471",
   "version": "7",
   "dialect": "postgresql",
@@ -26,12 +26,6 @@
           "primaryKey": false,
           "notNull": true
         },
-        "location": {
-          "name": "location",
-          "type": "varchar(256)",
-          "primaryKey": false,
-          "notNull": true
-        },
         "status": {
           "name": "status",
           "type": "laporan_status",
@@ -43,7 +37,7 @@
           "name": "photo_url",
           "type": "varchar(256)",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false
         },
         "user_id": {
           "name": "user_id",

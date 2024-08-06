@@ -58,6 +58,7 @@ export const updateUser = async (req: Request, res: Response) => {
       username,
       email,
       password,
+      is_admin,
       nama,
       no_handphone,
       jalan,
@@ -65,24 +66,28 @@ export const updateUser = async (req: Request, res: Response) => {
       status_kependudukan,
     } = req.body;
 
-    const salt = await bcryptjs.genSalt(10);
-    const hashedPassword = await bcryptjs.hash(password, salt);
+    const updateData: any = {
+      username,
+      email,
+      is_admin,
+      nama,
+      no_handphone,
+      jalan,
+      blok,
+      status_kependudukan,
+
+      // update timestamp
+      updated_at: sql`now()`,
+    };
+
+    if (password) {
+      const salt = await bcryptjs.genSalt(10);
+      updateData.password = await bcryptjs.hash(password, salt);
+    }
 
     const user = await db
       .update(usersSchema)
-      .set({
-        username,
-        email,
-        password: hashedPassword,
-        nama,
-        no_handphone,
-        jalan,
-        blok,
-        status_kependudukan,
-
-        // update timestamp
-        updated_at: sql`now()`,
-      })
+      .set(updateData)
       .where(eq(usersSchema.id, userId))
       .execute();
 
@@ -92,6 +97,7 @@ export const updateUser = async (req: Request, res: Response) => {
       data: {
         username,
         email,
+        is_admin,
         nama,
         no_handphone,
         jalan,
