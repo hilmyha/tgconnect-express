@@ -1,21 +1,33 @@
+import { CloudinaryStorage, Options } from "multer-storage-cloudinary";
 import multer from "multer";
 import path from "path";
+import cloudinary from "../cloudinary.config";
 
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, path.join(__dirname, "../../uploads/"));
-  },
-  filename: (req, file, cb) => {
-    const now = new Date();
-    const year = now.getFullYear();
-    const month = String(now.getMonth() + 1).padStart(2, "0"); // Months are zero-indexed
-    const day = String(now.getDate()).padStart(2, "0");
-    const formattedDate = `${year}-${month}-${day}`;
+interface CloudinaryParams extends Options {
+  folder: string;
+  format: (req: any, file: any) => Promise<string> | string;
+  public_id: (req: any, file: any) => string;
+}
 
-    // Format: yyyy-mm-dd-originalname
-    const fileName = `${formattedDate}-${file.originalname}`;
-    cb(null, fileName);
-  },
+const storage = new CloudinaryStorage({
+  cloudinary: cloudinary,
+  params: {
+    folder: "cloud-uploads",
+    format: async (req, file) => {
+      const mimeType = file.mimetype.split("/")[1];
+      return mimeType === "jpeg" || mimeType === "png" || mimeType === "jpg"
+        ? mimeType
+        : "jpg";
+    },
+    public_id: (req, file) => {
+      const now = new Date();
+      const year = now.getFullYear();
+      const month = String(now.getMonth() + 1).padStart(2, "0"); // Months are zero-indexed
+      const day = String(now.getDate()).padStart(2, "0");
+      const formattedDate = `${year}-${month}-${day}`;
+      return `${formattedDate}-${file.originalname}`;
+    },
+  } as CloudinaryParams,
 });
 
 const upload = multer({
