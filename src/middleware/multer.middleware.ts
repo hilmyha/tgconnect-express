@@ -33,7 +33,13 @@ const storage = new CloudinaryStorage({
 const upload = multer({
   storage,
   fileFilter: (req, file, cb) => {
-    const allowedMimeTypes = ["image/jpeg", "image/png", "image/jpg"];
+    const allowedMimeTypes = [
+      "image/jpeg",
+      "image/png",
+      "image/jpg",
+      "image/heic",
+      "image/heif",
+    ];
     if (allowedMimeTypes.includes(file.mimetype)) {
       cb(null, true);
     } else {

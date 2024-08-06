@@ -145,6 +145,8 @@ export const deleteUser = async (req: Request, res: Response) => {
       });
     }
 
+    await db.delete(usersSchema).where(eq(usersSchema.id, userId)).execute();
+
     res.json({
       status: "success",
       message: "User deleted successfully",

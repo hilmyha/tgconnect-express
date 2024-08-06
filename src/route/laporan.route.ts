@@ -1,8 +1,10 @@
 import { Router } from "express";
 import {
   createLaporan,
+  deleteLaporan,
   getLaporanById,
   getLaporans,
+  updateLaporan,
 } from "../controller/laporan.controller";
 import authMiddleware from "../middleware/auth.middleware";
 import upload from "../middleware/multer.middleware";
@@ -16,5 +18,7 @@ router.post(
   createLaporan
 );
 router.get("/laporans/:id", authMiddleware, getLaporanById);
+router.put("/laporans/update/:id", authMiddleware, updateLaporan);
+router.delete("/laporans/delete/:id", authMiddleware, deleteLaporan);
 
 export default router;

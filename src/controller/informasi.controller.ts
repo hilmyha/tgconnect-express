@@ -2,20 +2,19 @@ import dotenv from "dotenv";
 import { Request, Response } from "express";
 
 // schema imports
-import { laporanSchema } from "../db/schema/laporan";
+import { informasiSchema } from "../db/schema/informasi";
 import db from "../db/connection";
 import { eq } from "drizzle-orm";
-import { usersSchema } from "../db/schema/user";
 
 dotenv.config();
 
-// Get all laporans
-export const getLaporans = async (req: Request, res: Response) => {
+// Get all informasis
+export const getInformasis = async (req: Request, res: Response) => {
   try {
-    const laporans = await db.select().from(laporanSchema).execute();
+    const informasis = await db.select().from(informasiSchema).execute();
     return res.status(200).json({
       status: "success",
-      data: laporans,
+      data: informasis,
     });
   } catch (error: any) {
     return res.status(500).json({
@@ -25,29 +24,29 @@ export const getLaporans = async (req: Request, res: Response) => {
   }
 };
 
-// Get laporan by id
-export const getLaporanById = async (req: Request, res: Response) => {
+// Get informasi by id
+export const getInformasiById = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
-    const laporanId = Number(id);
+    const informasiId = Number(id);
 
-    const laporan = await db
+    const informasi = await db
       .select()
-      .from(laporanSchema)
-      .where(eq(laporanSchema.id, laporanId))
+      .from(informasiSchema)
+      .where(eq(informasiSchema.id, informasiId))
       .execute();
 
     // check if id did not exist
-    if (laporan.length === 0) {
+    if (informasi.length === 0) {
       return res.status(404).json({
         status: "error",
-        message: "Laporan not found",
+        message: "Informasi not found",
       });
     }
 
     res.status(200).json({
       status: "success",
-      data: laporan,
+      data: informasi,
     });
   } catch (error: any) {
     res.status(500).json({
@@ -57,31 +56,30 @@ export const getLaporanById = async (req: Request, res: Response) => {
   }
 };
 
-// Create laporan
-export const createLaporan = async (req: Request, res: Response) => {
+// Create informasi
+export const createInformasi = async (req: Request, res: Response) => {
   try {
-    const { title, description, status } = req.body;
-    const photo_url = req.file ? req.file.path : null;
+    const { title, description, date, time } = req.body;
     const user_id = req.user.id;
 
     await db
-      .insert(laporanSchema)
+      .insert(informasiSchema)
       .values({
         title,
         description,
-        status,
-        photo_url,
+        date,
+        time,
         user_id,
       })
       .execute();
 
     res.status(201).json({
       status: "success",
+      message: "Informasi created successfully",
       data: {
         title,
         description,
-        status,
-        photo_url,
+        date,
         user_id,
       },
     });
@@ -93,30 +91,32 @@ export const createLaporan = async (req: Request, res: Response) => {
   }
 };
 
-// Update laporan
-export const updateLaporan = async (req: Request, res: Response) => {
+// Update informasi
+export const updateInformasi = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
-    const laporanId = Number(id);
-    const { title, description, status } = req.body;
+    const informasiId = Number(id);
+    const { title, description, date, time } = req.body;
 
     await db
-      .update(laporanSchema)
+      .update(informasiSchema)
       .set({
         title,
         description,
-        status,
+        date,
+        time,
       })
-      .where(eq(laporanSchema.id, laporanId))
+      .where(eq(informasiSchema.id, informasiId))
       .execute();
 
     res.status(200).json({
       status: "success",
-      message: "Laporan updated successfully",
+      message: "Informasi updated successfully",
       data: {
         title,
         description,
-        status,
+        date,
+        time,
       },
     });
   } catch (error: any) {
@@ -127,17 +127,20 @@ export const updateLaporan = async (req: Request, res: Response) => {
   }
 };
 
-// Delete laporan
-export const deleteLaporan = async (req: Request, res: Response) => {
+// Delete informasi
+export const deleteInformasi = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
-    const laporanId = Number(id);
+    const informasiId = Number(id);
 
-    await db.delete(laporanSchema).where(eq(laporanSchema.id, laporanId));
+    await db
+      .delete(informasiSchema)
+      .where(eq(informasiSchema.id, informasiId))
+      .execute();
 
     res.status(200).json({
       status: "success",
-      message: "Laporan deleted successfully",
+      message: "Informasi deleted successfully",
     });
   } catch (error: any) {
     res.status(500).json({
