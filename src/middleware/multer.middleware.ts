@@ -15,17 +15,18 @@ const storage = new CloudinaryStorage({
     folder: "cloud-uploads",
     format: async (req, file) => {
       const mimeType = file.mimetype.split("/")[1];
-      return mimeType === "jpeg" || mimeType === "png" || mimeType === "jpg"
+      return mimeType === "jpeg" ||
+        mimeType === "png" ||
+        mimeType === "jpg" ||
+        mimeType === "heic" ||
+        mimeType === "heif"
         ? mimeType
         : "jpg";
     },
     public_id: (req, file) => {
-      const now = new Date();
-      const year = now.getFullYear();
-      const month = String(now.getMonth() + 1).padStart(2, "0"); // Months are zero-indexed
-      const day = String(now.getDate()).padStart(2, "0");
-      const formattedDate = `${year}-${month}-${day}`;
-      return `${formattedDate}-${file.originalname}`;
+      // format timestamp(2024-08-07T00:53:12.263Z) - filename
+      const timestamp = new Date().toISOString().replace(/:/g, "-");
+      return `${timestamp}-${file.originalname}`;
     },
   } as CloudinaryParams,
 });

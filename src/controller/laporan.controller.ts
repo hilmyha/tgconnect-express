@@ -4,7 +4,7 @@ import { Request, Response } from "express";
 // schema imports
 import { laporanSchema } from "../db/schema/laporan";
 import db from "../db/connection";
-import { eq } from "drizzle-orm";
+import { eq, sql } from "drizzle-orm";
 import { usersSchema } from "../db/schema/user";
 
 dotenv.config();
@@ -106,6 +106,9 @@ export const updateLaporan = async (req: Request, res: Response) => {
         title,
         description,
         status,
+
+        // update timestamp
+        updated_at: sql`now()`,
       })
       .where(eq(laporanSchema.id, laporanId))
       .execute();

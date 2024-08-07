@@ -2,19 +2,20 @@ import dotenv from "dotenv";
 import { Request, Response } from "express";
 
 // schema imports
-import { informasiSchema } from "../db/schema/informasi";
+import { dokumenwargaSchema } from "../db/schema/dokumenwarga";
 import db from "../db/connection";
 import { eq, sql } from "drizzle-orm";
+import { usersSchema } from "../db/schema/user";
 
 dotenv.config();
 
-// Get all informasis
-export const getInformasis = async (req: Request, res: Response) => {
+// Get all dokumenwargas
+export const getDokumenWargas = async (req: Request, res: Response) => {
   try {
-    const informasis = await db.select().from(informasiSchema).execute();
+    const dokumenwargas = await db.select().from(dokumenwargaSchema).execute();
     return res.status(200).json({
       status: "success",
-      data: informasis,
+      data: dokumenwargas,
     });
   } catch (error: any) {
     return res.status(500).json({
@@ -24,29 +25,30 @@ export const getInformasis = async (req: Request, res: Response) => {
   }
 };
 
-// Get informasi by id
-export const getInformasiById = async (req: Request, res: Response) => {
+// Get dokumenwarga by id
+export const getDokumenWargaById = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
-    const informasiId = Number(id);
+    const dokumenWargaId = Number(id);
 
-    const informasi = await db
+    const dokumenwarga = await db
       .select()
-      .from(informasiSchema)
-      .where(eq(informasiSchema.id, informasiId))
+      .from(dokumenwargaSchema)
+      .where(eq(dokumenwargaSchema.id, dokumenWargaId))
+      .leftJoin(usersSchema, eq(dokumenwargaSchema.user_id, usersSchema.id))
       .execute();
 
     // check if id did not exist
-    if (informasi.length === 0) {
+    if (dokumenwarga.length === 0) {
       return res.status(404).json({
         status: "error",
-        message: "Informasi not found",
+        message: "Dokumen Warga not found",
       });
     }
 
     res.status(200).json({
       status: "success",
-      data: informasi,
+      data: dokumenwarga,
     });
   } catch (error: any) {
     res.status(500).json({
@@ -56,31 +58,29 @@ export const getInformasiById = async (req: Request, res: Response) => {
   }
 };
 
-// Create informasi
-export const createInformasi = async (req: Request, res: Response) => {
+// Create dokumenwarga
+export const createDokumenWarga = async (req: Request, res: Response) => {
   try {
-    const { title, description, date, time } = req.body;
+    const { status, description } = req.body;
+    const dokumen_url = req.file ? req.file.path : null;
     const user_id = req.user.id;
 
     await db
-      .insert(informasiSchema)
+      .insert(dokumenwargaSchema)
       .values({
-        title,
+        dokumen_url,
         description,
-        date,
-        time,
+        status,
         user_id,
       })
       .execute();
 
     res.status(201).json({
       status: "success",
-      message: "Informasi created successfully",
       data: {
-        title,
+        dokumen_url,
         description,
-        date,
-        user_id,
+        status,
       },
     });
   } catch (error: any) {
@@ -91,36 +91,28 @@ export const createInformasi = async (req: Request, res: Response) => {
   }
 };
 
-// Update informasi
-export const updateInformasi = async (req: Request, res: Response) => {
+// Update dokumenwarga
+export const updateDokumenWarga = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
-    const informasiId = Number(id);
-    const { title, description, date, time } = req.body;
+    const dokumenWargaId = Number(id);
+    const { status, description } = req.body;
 
     await db
-      .update(informasiSchema)
+      .update(dokumenwargaSchema)
       .set({
-        title,
+        status,
         description,
-        date,
-        time,
 
         // update timestamp
         updated_at: sql`now()`,
       })
-      .where(eq(informasiSchema.id, informasiId))
+      .where(eq(dokumenwargaSchema.id, dokumenWargaId))
       .execute();
 
     res.status(200).json({
       status: "success",
-      message: "Informasi updated successfully",
-      data: {
-        title,
-        description,
-        date,
-        time,
-      },
+      message: "Dokumen Warga updated successfully",
     });
   } catch (error: any) {
     res.status(500).json({
@@ -130,20 +122,20 @@ export const updateInformasi = async (req: Request, res: Response) => {
   }
 };
 
-// Delete informasi
-export const deleteInformasi = async (req: Request, res: Response) => {
+// Delete dokumenwarga
+export const deleteDokumenWarga = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
-    const informasiId = Number(id);
+    const dokumenWargaId = Number(id);
 
     await db
-      .delete(informasiSchema)
-      .where(eq(informasiSchema.id, informasiId))
+      .delete(dokumenwargaSchema)
+      .where(eq(dokumenwargaSchema.id, dokumenWargaId))
       .execute();
 
     res.status(200).json({
       status: "success",
-      message: "Informasi deleted successfully",
+      message: "Dokumen Warga deleted successfully",
     });
   } catch (error: any) {
     res.status(500).json({
